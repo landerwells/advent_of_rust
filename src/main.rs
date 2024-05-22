@@ -1,6 +1,7 @@
 mod utils;
-mod year2023;
 mod year2015;
+mod year2017;
+mod year2023;
 use std::env;
 use std::process::Command;
 
@@ -20,21 +21,26 @@ fn main() {
         ("2023", "day03") => year2023::day03::run(),
         ("2023", "day04") => year2023::day04::run(),
         ("2015", "day01") => year2015::day01::run(),
+        ("2017", "day06") => year2017::day06::run(),
+        ("2017", "day07") => year2017::day07::run(),
         // Add new days here
         _ => {
             // Call the create_day.sh script
             let status = Command::new("sh")
                 .arg("create_day.sh")
                 .arg(year)
-                .arg(args[2].to_string()) // Pass the day without leading zero
+                .arg(&args[2]) // Pass the day without leading zero
                 .status()
                 .expect("Failed to execute script");
 
             if !status.success() {
                 eprintln!("Failed to create solution for year {} day {}", year, day);
                 std::process::exit(1);
-            } 
-            println!("Successfully created solution for year {} day {}", year, day);
+            }
+            println!(
+                "Successfully created solution for year {} day {}",
+                year, day
+            );
         }
     }
 }
