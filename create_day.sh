@@ -36,12 +36,7 @@ if [ -f "$TARGET_FILE" ]; then
   echo "File ${TARGET_FILE} already exists"
 else
   cp src/template.rs "$TARGET_FILE"
-  # Using `sed -i` for cross-platform compatibility
-  if [[ "$OSTYPE" == "darwin"* ]]; then
-    sed -i '' "s/YEAR/${YEAR}/g; s/DAY/${DAY_PADDED}/g" "$TARGET_FILE"
-  else
-    sed -i "s/YEAR/${YEAR}/g; s/DAY/${DAY_PADDED}/g" "$TARGET_FILE"
-  fi
+  sed -i "s/YEAR/${YEAR}/g; s/DAY/${DAY_PADDED}/g" "$TARGET_FILE"
   echo "Created ${TARGET_FILE}"
 fi
 
@@ -52,24 +47,15 @@ if ! grep -q "pub mod day${DAY_PADDED};" "$MOD_FILE"; then
   echo "Updated ${MOD_FILE}"
 fi
 
-# # Update the main.rs file to include the year module if not present
-# if ! grep -q "mod year${YEAR};" "$MAIN_FILE"; then
-#     if [[ "$OSTYPE" == "darwin"* ]]; then
-#         sed -i '' "/mod utils;/a \mod year${YEAR};" "$MAIN_FILE"
-#     else
-#         sed -i "/mod utils;/a \mod year${YEAR};" "$MAIN_FILE"
-#     fi
-#     echo "Added mod year${YEAR} to ${MAIN_FILE}"
-# fi
+# Update the main.rs file to include the year module if not present
+if ! grep -q "mod year${YEAR};" "$MAIN_FILE"; then
+    sed -i "/mod utils;/a \mod year${YEAR};" "$MAIN_FILE"
+    echo "Added mod year${YEAR} to ${MAIN_FILE}"
+fi
 
 # Update the main.rs file to include the new day in the match statement before the "// Add new days here" comment
 if ! grep -q "year${YEAR}::day${DAY_PADDED}::run()" "$MAIN_FILE"; then
-  # if [[ "$OSTYPE" == "darwin"* ]]; then
-  #     sed -i '' "/\/\/ Add new days here/i\\
-  #     (\"${YEAR}\", \"day${DAY_PADDED}\") => year${YEAR}::day${DAY_PADDED}::run()," "$MAIN_FILE"
-  # else
   sed -i "/\/\/ Add new days here/i\\
   (\"${YEAR}\", \"day${DAY_PADDED}\") => year${YEAR}::day${DAY_PADDED}::run()," "$MAIN_FILE"
-  # fi
   echo "Updated ${MAIN_FILE}"
 fi
