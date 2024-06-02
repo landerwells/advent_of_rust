@@ -1,4 +1,5 @@
 mod utils;
+mod year2016;
 mod year2018;
 mod year2015;
 mod year2017;
@@ -25,6 +26,8 @@ fn main() {
         ("2017", "day06") => year2017::day06::run(),
         ("2017", "day07") => year2017::day07::run(),
   ("2018", "day01") => year2018::day01::run(),
+  ("2017", "day02") => year2017::day02::run(),
+  ("2016", "day02") => year2016::day02::run(),
         // Add new days here
         _ => {
             // Call the create_day.sh script
