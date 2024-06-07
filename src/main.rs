@@ -18,18 +18,19 @@ fn main() {
     let day = format!("day{:02}", args[2].parse::<u32>().expect("Invalid day"));
 
     match (year.as_str(), day.as_str()) {
+        ("2015", "day01") => year2015::day01::run(),
+        ("2015", "day07") => year2015::day07::run(),
+        ("2015", "day18") => year2015::day18::run(),
+        ("2016", "day02") => year2016::day02::run(),
+        ("2017", "day02") => year2017::day02::run(),
+        ("2017", "day06") => year2017::day06::run(),
+        ("2017", "day07") => year2017::day07::run(),
+        ("2018", "day01") => year2018::day01::run(),
         ("2023", "day01") => year2023::day01::run(),
         ("2023", "day02") => year2023::day02::run(),
         ("2023", "day03") => year2023::day03::run(),
         ("2023", "day04") => year2023::day04::run(),
-        ("2015", "day01") => year2015::day01::run(),
-        ("2017", "day06") => year2017::day06::run(),
-        ("2017", "day07") => year2017::day07::run(),
-        ("2018", "day01") => year2018::day01::run(),
-        ("2017", "day02") => year2017::day02::run(),
-        ("2016", "day02") => year2016::day02::run(),
-        ("2015", "day07") => year2015::day07::run(),
-  ("2015", "day18") => year2015::day18::run(),
+        ("2018", "day02") => year2018::day02::run(),
         // Add new days here
         _ => {
             // Call the create_day.sh script

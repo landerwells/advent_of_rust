@@ -16,6 +16,19 @@ INPUT_DIR="inputs/${YEAR}"
 INPUT_FILE="${INPUT_DIR}/day${DAY_PADDED}.txt"
 MAIN_FILE="src/main.rs"
 
+# Determine the correct version of sed to use
+if [[ "$OSTYPE" == "darwin"* ]]; then
+  # macOS
+  SED="gsed"
+  if ! command -v gsed &> /dev/null; then
+    echo "gsed could not be found. Please install it using 'brew install gnu-sed'."
+    exit 1
+  fi
+else
+  # Linux
+  SED="sed"
+fi
+
 # Ensure the input directory exists
 mkdir -p "$INPUT_DIR"
 
@@ -36,7 +49,7 @@ if [ -f "$TARGET_FILE" ]; then
   echo "File ${TARGET_FILE} already exists"
 else
   cp src/template.rs "$TARGET_FILE"
-  sed -i "s/YEAR/${YEAR}/g; s/DAY/${DAY_PADDED}/g" "$TARGET_FILE"
+  $SED -i "s/YEAR/${YEAR}/g; s/DAY/${DAY_PADDED}/g" "$TARGET_FILE"
   echo "Created ${TARGET_FILE}"
 fi
 
@@ -49,13 +62,13 @@ fi
 
 # Update the main.rs file to include the year module if not present
 if ! grep -q "mod year${YEAR};" "$MAIN_FILE"; then
-    sed -i "/mod utils;/a \mod year${YEAR};" "$MAIN_FILE"
-    echo "Added mod year${YEAR} to ${MAIN_FILE}"
+  $SED -i "/mod utils;/a \mod year${YEAR};" "$MAIN_FILE"
+  echo "Added mod year${YEAR} to ${MAIN_FILE}"
 fi
 
 # Update the main.rs file to include the new day in the match statement before the "// Add new days here" comment
 if ! grep -q "year${YEAR}::day${DAY_PADDED}::run()" "$MAIN_FILE"; then
-  sed -i "/\/\/ Add new days here/i\\
-  (\"${YEAR}\", \"day${DAY_PADDED}\") => year${YEAR}::day${DAY_PADDED}::run()," "$MAIN_FILE"
+  $SED -i "/\/\/ Add new days here/i \\
+        (\"${YEAR}\", \"day${DAY_PADDED}\") => year${YEAR}::day${DAY_PADDED}::run()," "$MAIN_FILE"
   echo "Updated ${MAIN_FILE}"
 fi
