@@ -31,6 +31,7 @@ fn main() {
         ("2023", "day03") => year2023::day03::run(),
         ("2023", "day04") => year2023::day04::run(),
         ("2018", "day02") => year2018::day02::run(),
+        ("2018", "day03") => year2018::day03::run(),
         // Add new days here
         _ => {
             // Call the create_day.sh script
