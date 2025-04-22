@@ -25,7 +25,7 @@ pub fn update_cookie() -> std::io::Result<()> {
 
 // I should start by coming up with a template for the files that I want created
 
-pub fn get_input(year: i32, day: i32) -> Result<String, io::Error> {
+pub fn get_input(year: i32, day: i32) -> String {
     let path = format!(
         "{}/.cache/advent_of_code_inputs/{}/{}",
         std::env::var("HOME").unwrap(),
@@ -33,10 +33,23 @@ pub fn get_input(year: i32, day: i32) -> Result<String, io::Error> {
         day
     );
 
-    let mut input_file = File::open(path)?;
+    let path_obj = Path::new(&path);
+
+    if !path_obj.exists() {
+        download_input(year, day);
+    }
+
     let mut input = String::new();
-    input_file.read_to_string(&mut input)?;
-    Ok(input)
+    File::open(&path)
+        .expect("Failed to open input file")
+        .read_to_string(&mut input)
+        .expect("Failed to read input file");
+
+    input
+}
+
+fn download_input(year: i32, day: i32) {
+    println!("Downloading input from interwebs")
 }
 
 pub fn generate_day(year: i32, day: i32) {

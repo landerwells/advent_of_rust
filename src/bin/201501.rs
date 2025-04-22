@@ -1,26 +1,21 @@
-use rust::utils;
+use advent_of_rust::utils::*;
 
 fn main() {
-    // get input
+    let input = parse(get_input(2015, 1));
 
-    // parse
-    let input = parse(input);
-
-    // solve part 1 or 2
-    // need to implement some logic here
-    println!("Part 1: {}", part_one(input));
-    println!("Part 2: {}", part_two(input));
+    println!("Part 1: {}", part_one(&input));
+    println!("Part 2: {}", part_two(&input));
 }
 
 fn parse(input: String) -> String {
     input
 }
 
-fn part_one(input: String) -> i32 {
+fn part_one(input: &str) -> i32 {
     0
 }
 
-fn part_two(input: String) -> i32 {
+fn part_two(input: &str) -> i32 {
     0
 }
 
