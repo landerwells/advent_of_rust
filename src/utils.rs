@@ -43,6 +43,7 @@ pub fn get_input(year: i32, day: i32) -> String {
 
 fn download_input(_year: i32, _day: i32) {
     println!("Downloading input from interwebs")
+    // TODO: Finish
 }
 
 pub fn generate_day(year: i32, day: i32) {
@@ -54,40 +55,43 @@ pub fn generate_day(year: i32, day: i32) {
         return;
     }
 
-    let contents = r#" use advent_of_rust::utils::*;
+    let contents = format!(
+        r#"use advent_of_rust::utils::*;
 
-fn main() {
-    let input = parse(get_input(2015, 1));
+fn main() {{
+    let input = parse(get_input({}, {}));
 
-    println!("Part 1: {}", part_one(&input));
-    println!("Part 2: {}", part_two(&input));
-}
+    println!("Part 1: {{}}", part_one(&input));
+    println!("Part 2: {{}}", part_two(&input));
+}}
 
-fn parse(input: String) -> String {
+fn parse(input: String) -> String {{
     input
-}
+}}
 
-fn part_one(_input: &str) -> i32 {
+fn part_one(_input: &str) -> i32 {{
     0
-}
+}}
 
-fn part_two(_input: &str) -> i32 {
+fn part_two(_input: &str) -> i32 {{
     0
-}
+}}
 
 // #[cfg(test)]
-// mod tests {
+// mod tests {{
 //     use super::*;
 
 //     #[test]
-//     fn test_part_one() {}
+//     fn test_part_one() {{}}
 
 //     #[test]
-//     fn test_part_two() {}
-// }
-"#;
+//     fn test_part_two() {{}}
+// }}
+"#,
+        year, day
+    );
 
-    let _ = create_file_with_dirs(&path_str, contents);
+    let _ = create_file_with_dirs(&path_str, &contents);
 }
 
 fn create_file_with_dirs(path: &str, contents: &str) -> io::Result<()> {
