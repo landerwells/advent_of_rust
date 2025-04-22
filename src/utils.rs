@@ -1,7 +1,6 @@
 use std::fs::{File, create_dir_all};
 use std::io::{self, Read, Write};
 use std::path::Path;
-// use std::{fs, result};
 
 pub fn update_cookie() -> std::io::Result<()> {
     println!("Please enter the new value of the cookie:");
@@ -18,12 +17,6 @@ pub fn update_cookie() -> std::io::Result<()> {
     let mut file = File::create(home + "/.cache/advent_of_code_inputs/cookie")?;
     file.write_all(input.as_bytes())
 }
-
-// I would like a command for generating a new day, and potentially getting the
-// input as well. I suppose that getting the input should occur when I am
-// creating a new day as I can run it right away
-
-// I should start by coming up with a template for the files that I want created
 
 pub fn get_input(year: i32, day: i32) -> String {
     let path = format!(
@@ -48,46 +41,53 @@ pub fn get_input(year: i32, day: i32) -> String {
     input
 }
 
-fn download_input(year: i32, day: i32) {
+fn download_input(_year: i32, _day: i32) {
     println!("Downloading input from interwebs")
 }
 
 pub fn generate_day(year: i32, day: i32) {
-    // This function needs to create a file in bin/YEAR/DAY format
     let path_str = format!("./src/bin/{}{:02}.rs", year, day);
+    let path_obj = Path::new(&path_str);
 
-    let contents = r#"use crate::utils;
+    if path_obj.exists() {
+        println!("File {}{}.rs already exists!", year, day);
+        return;
+    }
+
+    let contents = r#" use advent_of_rust::utils::*;
 
 fn main() {
-    // get input
+    let input = parse(get_input(2015, 1));
 
-    // parse
-    let input = parse(input);
-
-    // solve part 1 or 2
-    // need to implement some logic here
-    println!("Part 1: {}", part_one(input));
-    println!("Part 2: {}", part_two(input));
+    println!("Part 1: {}", part_one(&input));
+    println!("Part 2: {}", part_two(&input));
 }
 
 fn parse(input: String) -> String {
     input
 }
 
-fn part_one(input: String) -> i32 {
+fn part_one(_input: &str) -> i32 {
     0
 }
 
-fn part_two(input: String) -> i32 {
+fn part_two(_input: &str) -> i32 {
     0
 }
+
+// #[cfg(test)]
+// mod tests {
+//     use super::*;
+
+//     #[test]
+//     fn test_part_one() {}
+
+//     #[test]
+//     fn test_part_two() {}
+// }
 "#;
 
     let _ = create_file_with_dirs(&path_str, contents);
-
-    // I am quite sure we could achieve a high functioning system
-    // With really good errors
-    println!("Generating day");
 }
 
 fn create_file_with_dirs(path: &str, contents: &str) -> io::Result<()> {
