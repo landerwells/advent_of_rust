@@ -106,3 +106,11 @@ fn create_file_with_dirs(path: &str, contents: &str) -> io::Result<()> {
 
     Ok(())
 }
+
+#[allow(dead_code)]
+pub fn parse_grid(input: String) -> Vec<Vec<char>> {
+    input
+        .split_whitespace()
+        .map(|line| line.chars().collect())
+        .collect()
+}
